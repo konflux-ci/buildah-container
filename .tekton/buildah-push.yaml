@@ -14,7 +14,7 @@ metadata:
     appstudio.openshift.io/component: buildah
     pipelines.appstudio.openshift.io/type: build
   name: buildah-on-push
-  namespace: rhtap-integration-tenant
+  namespace: rhtap-build-tenant
 spec:
   params:
   - name: dockerfile
