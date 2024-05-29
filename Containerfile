@@ -1,5 +1,15 @@
 FROM registry.access.redhat.com/ubi9/ubi:latest@sha256:66233eebd72bb5baa25190d4f55e1dc3fff3a9b77186c1f91a0abdb274452072 as builder
-RUN dnf -y install golang
+RUN dnf -y install \
+    make \
+    golang \
+    glib2-devel \
+    gpgme-devel \
+    libassuan-devel \
+    libseccomp-devel \
+    git \
+    bzip2 \
+    runc \
+    containers-common
 
 WORKDIR /go/src/containers/buildah
 
@@ -10,7 +20,7 @@ RUN make buildah
 # Rebase on ubi9
 FROM registry.access.redhat.com/ubi9:latest@sha256:66233eebd72bb5baa25190d4f55e1dc3fff3a9b77186c1f91a0abdb274452072
 
-COPY --from=builder /usr/local/bin/buildah /usr/bin/buildah
+COPY --from=builder /go/src/containers/buildah/bin/buildah /usr/bin/buildah
 
 WORKDIR /workdir
 
