@@ -14,7 +14,7 @@ metadata:
     appstudio.openshift.io/component: buildah
     pipelines.appstudio.openshift.io/type: build
   name: buildah-on-push
-  namespace: rhtap-integration-tenant
+  namespace: rhtap-build-tenant
 spec:
   params:
   - name: dockerfile
@@ -93,17 +93,13 @@ spec:
       description: Skip checks against built image
       name: skip-checks
       type: string
-    - default: "true"
+    - default: "false"
       description: Execute the build with network isolation
       name: hermetic
       type: string
-    - default: '{"packages": [{"path": "buildah", "type": "gomod"}, {"type": "rpm"}], "flags": ["gomod-vendor"]}'
+    - default: ""
       description: Build dependencies to be prefetched by Cachi2
       name: prefetch-input
-      type: string
-    - default: "true"
-      description: Enable dev-package-managers in prefetch task
-      name: prefetch-dev-package-managers-enabled
       type: string
     - default: "false"
       description: Java build
@@ -187,8 +183,6 @@ spec:
       params:
       - name: input
         value: $(params.prefetch-input)
-      - name: dev-package-managers
-        value: $(params.prefetch-dev-package-managers-enabled)
       runAfter:
       - clone-repository
       taskRef:
@@ -196,7 +190,7 @@ spec:
         - name: name
           value: prefetch-dependencies
         - name: bundle
-          value: quay.io/redhat-appstudio-tekton-catalog/task-prefetch-dependencies:0.1@sha256:9aec3ae9f0f50a05abdc739faf4cbc82832cff16c77ac74e1d54072a882c0503
+          value: quay.io/redhat-appstudio-tekton-catalog/task-prefetch-dependencies:0.1@sha256:0285e38b5b88552ef3d760db83e6a0ce91d8d308b48890885f51b13571a4e057
         - name: kind
           value: task
         resolver: bundles
@@ -235,7 +229,7 @@ spec:
         - name: name
           value: buildah
         - name: bundle
-          value: quay.io/redhat-appstudio-tekton-catalog/task-buildah:0.1@sha256:7cd80204a133c96ccc72bb8d6be0caeaf5014924e679d3686560c8e54cb87d24
+          value: quay.io/redhat-appstudio-tekton-catalog/task-buildah:0.1@sha256:13447a7b6a20e51875124c3510a4b6e86119f7b3ba89e2c997e0befefefb65f4
         - name: kind
           value: task
         resolver: bundles
