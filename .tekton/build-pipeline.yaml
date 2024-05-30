@@ -80,7 +80,7 @@ spec:
         - name: name
           value: buildah-oci-ta
         - name: bundle
-          value: quay.io/redhat-appstudio-tekton-catalog/task-buildah-oci-ta:0.1@sha256:692e8882c1b10d0fa6b1dc5b8191c8b01cda22e04403026bcd6168e393df9597
+          value: quay.io/redhat-appstudio-tekton-catalog/task-buildah-oci-ta:0.1@sha256:af8f7f8c5e780cb7485023854471e4415fd7f99e6fe6cafadd66a0ab5875e985
         - name: kind
           value: task
       runAfter:
@@ -301,7 +301,7 @@ spec:
       description: Execute the build with network isolation
       name: hermetic
       type: string
-    - default: '{"packages": [{"path": "buildah", "type": "gomod"}], "flags": ["gomod-vendor"]}'
+    - default: ''
       description: Build dependencies to be prefetched by Cachi2
       name: prefetch-input
       type: string
