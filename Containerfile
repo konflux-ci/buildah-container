@@ -1,5 +1,19 @@
 FROM registry.access.redhat.com/ubi9/ubi:latest@sha256:66233eebd72bb5baa25190d4f55e1dc3fff3a9b77186c1f91a0abdb274452072 as builder
 RUN dnf -y install golang
+RUN dnf -y install \
+    make \
+    golang \
+    bats \
+    btrfs-progs-devel \
+    glib2-devel \
+    gpgme-devel \
+    libassuan-devel \
+    libseccomp-devel \
+    git \
+    bzip2 \
+    go-md2man \
+    runc \
+    containers-common
 
 WORKDIR /go/src/containers/buildah
 
