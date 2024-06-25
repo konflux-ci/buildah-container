@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/ubi:latest@sha256:66233eebd72bb5baa25190d4f55e1dc3fff3a9b77186c1f91a0abdb274452072 as builder
+FROM registry.access.redhat.com/ubi9/ubi:latest@sha256:d98fdae16212df566150ac975cab860cd8d2cb1b322ed9966d09a13e219112e9 as builder
 RUN dnf -y install \
     make \
     golang \
