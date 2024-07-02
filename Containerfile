@@ -18,7 +18,7 @@ COPY buildah/ .
 RUN make buildah
 
 # Rebase on ubi9
-FROM registry.access.redhat.com/ubi9:latest@sha256:d98fdae16212df566150ac975cab860cd8d2cb1b322ed9966d09a13e219112e9
+FROM registry.access.redhat.com/ubi9:latest@sha256:081c96d1b1c7cd1855722d01f1ca53360510443737b1eb33284c6c4c330e537c
 
 COPY --from=builder /go/src/containers/buildah/bin/buildah /usr/bin/buildah
 
