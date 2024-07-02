@@ -78,9 +78,9 @@ spec:
         resolver: bundles
         params:
         - name: name
-          value: buildah-oci-ta
+          value: buildah-remote-oci-ta
         - name: bundle
-          value: quay.io/redhat-appstudio-tekton-catalog/task-buildah-oci-ta:0.1@sha256:01c9fd06cdbee17594eed8aba423a93ebb52deb625016ca34c07008abb0aa866
+          value: quay.io/konflux-ci/tekton-catalog/task-buildah-remote-oci-ta:0.1@sha256:876f30a03605b242f2ae46381160cd3270e035bb91327cf9f4ded7c5fdf8ec7e
         - name: kind
           value: task
       runAfter:
@@ -109,6 +109,10 @@ spec:
         value: $(tasks.prefetch-dependencies.results.SOURCE_ARTIFACT)
       - name: CACHI2_ARTIFACT
         value: $(tasks.prefetch-dependencies.results.CACHI2_ARTIFACT)
+      - name: BUILD_ARGS_FILE
+        value: $(params.build-args-file)
+      - name: PLATFORM
+        value: linux/arm64
     - name: build-source-image
       taskRef:
         resolver: bundles
@@ -269,6 +273,21 @@ spec:
         value: "$(tasks.build-container.results.IMAGE_URL)"
       - name: IMAGE_DIGEST
         value: "$(tasks.build-container.results.IMAGE_DIGEST)"
+    - name: apply-tags
+      params:
+      - name: IMAGE
+        value: $(tasks.build-container.results.IMAGE_URL)
+      runAfter:
+      - build-container
+      taskRef:
+        params:
+        - name: name
+          value: apply-tags
+        - name: bundle
+          value: quay.io/redhat-appstudio-tekton-catalog/task-apply-tags:0.1@sha256:29add9a49a2281a3755a9b580d2b9c5cb110231b14cccf8ade2fd7895a9b4b4a
+        - name: kind
+          value: task
+        resolver: bundles
     params:
     - name: git-url
       type: string
@@ -321,6 +340,26 @@ spec:
       type: string
       description: Build a source image.
       default: 'false'
+    - name: build-args-file
+      type: string
+      description: Path to a file with build arguments, see https://www.mankier.com/1/buildah-build#--build-arg-file
+      default: ""
+    - name: enable-amd64-build
+      type: string
+      description: Enable amd64 builds 
+      default: "false"
+    - name: enable-arm64-build
+      type: string
+      description: Enable arm64 builds 
+      default: "false"
+    - name: enable-ppc64le-build
+      type: string
+      description: Enable ppc64le builds 
+      default: "false"
+    - name: enable-s390x-build
+      type: string
+      description: Enable s390x builds 
+      default: "false"
     workspaces:
     - name: git-auth
       optional: true
