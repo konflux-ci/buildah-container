@@ -485,7 +485,8 @@ spec:
       description: Execute the build with network isolation
       name: hermetic
       type: string
-    - default: '{"packages": [{"type": "gomod", "path": "buildah"}], "flags": ["gomod-vendor-check"]}'
+    - default: ''
+      # default: '{"packages": [{"type": "gomod", "path": "buildah"}], "flags": ["gomod-vendor-check"]}' # fails due to https://issues.redhat.com/browse/KFLUXBUGS-1421
       description: Build dependencies to be prefetched by Cachi2
       name: prefetch-input
       type: string
