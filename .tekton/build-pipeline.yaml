@@ -96,7 +96,7 @@ spec:
         - 'true'
       params:
       - name: IMAGE
-        value: "$(params.output-image)"
+        value: "$(params.output-image)-amd64"
       - name: DOCKERFILE
         value: "$(params.dockerfile)"
       - name: CONTEXT
@@ -140,7 +140,7 @@ spec:
         - 'true'
       params:
       - name: IMAGE
-        value: "$(params.output-image)"
+        value: "$(params.output-image)-arm64"
       - name: DOCKERFILE
         value: "$(params.dockerfile)"
       - name: CONTEXT
@@ -184,7 +184,7 @@ spec:
         - 'true'
       params:
       - name: IMAGE
-        value: "$(params.output-image)"
+        value: "$(params.output-image)-ppc64le"
       - name: DOCKERFILE
         value: "$(params.dockerfile)"
       - name: CONTEXT
@@ -228,7 +228,7 @@ spec:
         - 'true'
       params:
       - name: IMAGE
-        value: "$(params.output-image)"
+        value: "$(params.output-image)-s390x"
       - name: DOCKERFILE
         value: "$(params.dockerfile)"
       - name: CONTEXT
