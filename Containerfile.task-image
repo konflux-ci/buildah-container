@@ -1,7 +1,6 @@
-# Instead of producing an image that runs buildah, create an image which allows buildah to be called
+# Instead of producing an image that only runs buildah, create an image which allows buildah to be called
 # This will eventually reference a released image in quay.io/konflux-ci/buildah:latest but we want to
 #   pin to the latest pre-release version of buildah
-FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:7cd298d576ebb1e1805ef2c72daa37864791a9dc3b1de7641414d6ef8815e0fe
-USER 0
-WORKDIR /
-ENTRYPOINT ["/bin/bash"]
+FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:7cd298d576ebb1e1805ef2c72daa37864791a9dc3b1de7641414d6ef8815e0fe as buildah-image
+FROM registry.access.redhat.com/ubi9/buildah:latest
+COPY --from=buildah-image /usr/bin/buildah /usr/bin/buildah
