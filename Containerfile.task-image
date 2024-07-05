@@ -1,0 +1,5 @@
+# Instead of producing an image that runs buildah, create an image which allows buildah to be called
+FROM quay.io/konflux-ci/buildah:latest@sha256:6d41d76152f635b0cb4fe37e96255fe545709a693eeb50f9a3aa63206a372d9e
+USER 0
+WORKDIR /
+ENTRYPOINT ["/bin/bash"]
