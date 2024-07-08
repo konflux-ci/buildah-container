@@ -22,7 +22,7 @@ metadata:
 spec:
   params:
   - name: dockerfile
-    value: Containerfile.buildah
+    value: Containerfile.image_build
   - name: git-url
     value: '{{source_url}}'
   - name: image-expires-after
