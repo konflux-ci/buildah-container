@@ -28,7 +28,7 @@ spec:
         - name: name
           value: git-clone-oci-ta
         - name: bundle
-          value: quay.io/konflux-ci/tekton-catalog/task-git-clone-oci-ta:0.1@sha256:0c16d8e001d177d632cf0f0f4d4d248fadaebc840e7916e3fbbd737498e2fba3
+          value: quay.io/konflux-ci/tekton-catalog/task-git-clone-oci-ta:0.1@sha256:8e6a8aabf591c46dc46ac343d390a719422d8160871848c20df4e9fb1faa01a2
         - name: kind
           value: task
       when:
@@ -271,7 +271,7 @@ spec:
           - name: name
             value: build-image-manifest
           - name: bundle
-            value: quay.io/konflux-ci/tekton-catalog/task-build-image-manifest:0.1@sha256:fd0a0cf019621d6b577f1b9ab774bb1832f7cba61b4ceee2fd1bffc96895abf9
+            value: quay.io/konflux-ci/tekton-catalog/task-build-image-manifest:0.1@sha256:fee7a3f22fe6faa024d4c2f67668fc13bf8acd83c0faab1592478af7c99c6181
           - name: kind
             value: task
         resolver: bundles
