@@ -32,7 +32,8 @@ RUN make buildah
 # that runs safely with privileges within the container.
 #
 
-FROM quay.io/fedora/fedora:39@sha256:824e35614ffd383dc6baac8d50df00590355a3ea0e56f582fd3212eb175771ac
+# FROM registry.fedoraproject.org/fedora-minimal:39
+FROM registry.fedoraproject.org/fedora:39
 
 label "io.containers.capabilities"="CHOWN,DAC_OVERRIDE,FOWNER,FSETID,KILL,NET_BIND_SERVICE,SETFCAP,SETGID,SETPCAP,SETUID,CHOWN,DAC_OVERRIDE,FOWNER,FSETID,KILL,NET_BIND_SERVICE,SETFCAP,SETGID,SETPCAP,SETUID,SYS_CHROOT"
 
@@ -54,7 +55,7 @@ RUN dnf -y makecache && \
 
 COPY --from=builder /go/src/containers/buildah/bin/buildah /usr/bin/buildah
 
-ADD ./containers.conf /etc/containers/
+ADD image_build/buildah/containers.conf /etc/containers/
 
 # Setup internal Buildah to pass secrets/subscriptions down from host to internal container
 RUN printf '/run/secrets/etc-pki-entitlement:/run/secrets/etc-pki-entitlement\n/run/secrets/rhsm:/run/secrets/rhsm\n' > /etc/containers/mounts.conf
