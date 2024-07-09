@@ -11,7 +11,7 @@ metadata:
       (".tekton/build-pipeline.yaml".pathChanged() || 
       ".tekton/buildah-pull-request.yaml".pathChanged() || 
       ".tekton/buildah-push.yaml".pathChanged() || 
-      "Containerfile.buildah".pathChanged())
+      "Containerfile.image_build".pathChanged())
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: buildah-container
