@@ -34,7 +34,18 @@ RUN make buildah
 
 FROM registry.fedoraproject.org/fedora-minimal:39
 
-label "io.containers.capabilities"="CHOWN,DAC_OVERRIDE,FOWNER,FSETID,KILL,NET_BIND_SERVICE,SETFCAP,SETGID,SETPCAP,SETUID,CHOWN,DAC_OVERRIDE,FOWNER,FSETID,KILL,NET_BIND_SERVICE,SETFCAP,SETGID,SETPCAP,SETUID,SYS_CHROOT"
+LABEL "io.containers.capabilities"="CHOWN,DAC_OVERRIDE,FOWNER,FSETID,KILL,NET_BIND_SERVICE,SETFCAP,SETGID,SETPCAP,SETUID,CHOWN,DAC_OVERRIDE,FOWNER,FSETID,KILL,NET_BIND_SERVICE,SETFCAP,SETGID,SETPCAP,SETUID,SYS_CHROOT"
+LABEL name="buildah" \
+      summary="Containerized version of buildah which can be used to build OCI artifacts" \
+      com.redhat.component="buildah" \
+      description="OCI images and artifacts are central to the architecture of Konflux. In order to ensure that we can always take advantage of the latest functionality, this image can be used to reliably build the latest version of the CLI." \
+      io.k8s.display-name="buildah" \
+      io.k8s.description="OCI images and artifacts are central to the architecture of Konflux. In order to ensure that we can always take advantage of the latest functionality, this image can be used to reliably build the latest version of the CLI." \
+      io.openshift.tags="oci" \
+      vendor="Red Hat, Inc." \
+      distribution-scope="public" \
+      release="0" \
+      url="github.com/konflux-ci/buildah-container"
 
 ARG INSTALL_RPMS="buildah fuse-overlayfs ucpp"
 
