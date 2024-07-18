@@ -6,10 +6,12 @@ metadata:
     build.appstudio.redhat.com/commit_sha: '{{revision}}'
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
-    pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch == "main" && 
-      (".tekton/build-pipeline.yaml".pathChanged() || 
-      ".tekton/buildah-pull-request.yaml".pathChanged() || 
-      ".tekton/buildah-push.yaml".pathChanged() || 
+    pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch == "main" &&
+      (".tekton/build-pipeline.yaml".pathChanged() ||
+      ".tekton/buildah-pull-request.yaml".pathChanged() ||
+      ".tekton/buildah-push.yaml".pathChanged() ||
+      "buildah".pathChanged() ||
+      "image_build".pathChanged() ||
       "Containerfile.image_build".pathChanged())
   creationTimestamp: null
   labels:
