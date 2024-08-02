@@ -10,5 +10,3 @@ cd buildah
 git checkout main && git pull
 cd ..
 ```
-
-If you want to have a `Verified` commit, it appears that you need to include some other content with the submodule update.
