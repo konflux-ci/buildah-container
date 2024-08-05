@@ -14,7 +14,7 @@ metadata:
       "Containerfile.task-image".pathChanged())
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: buildah
+    appstudio.openshift.io/application: buildah-container
     appstudio.openshift.io/component: buildah-task-image
     pipelines.appstudio.openshift.io/type: build
   name: buildah-task-image-on-pull-request
