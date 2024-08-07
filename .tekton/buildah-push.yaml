@@ -42,6 +42,8 @@ spec:
     value: "true"
   pipelineRef:
     name: build-pipeline
+  timeouts:
+    pipeline: "2h0m0s"
   workspaces:
   - name: git-auth
     secret:
