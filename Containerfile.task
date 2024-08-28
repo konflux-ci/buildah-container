@@ -5,6 +5,6 @@
 # for our tasks that has more than _just_ buildah in it. We also need to add the required functionality
 # for the remote builds.
 FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:7cb5a35b7fe44e397fbf3b834f3bd8dcd9403a7c0a0b51469e6ec75b107d0846
-RUN microdnf install -y rsync openssh-clients kubernetes-client && \
+RUN microdnf install -y rsync openssh-clients kubernetes-client podman && \
     microdnf -y clean all && \
     rm -rf /var/cache /var/log/dnf* /var/log/yum.*
