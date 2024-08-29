@@ -4,7 +4,15 @@
 # in-cluseter with the tasks focused on building remotely. Therefore, we need to maintain a buildah image
 # for our tasks that has more than _just_ buildah in it. We also need to add the required functionality
 # for the remote builds.
+
+FROM registry.access.redhat.com/ubi9/go-toolset:1.21 AS dockerfile-json-builder
+
+WORKDIR /app
+COPY dockerfile-json .
+RUN go build -o dockerfile-json
+
 FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:da0061b45af34cdd02b8a96c8b24916af53cd04f6df71ef8e932ef9be5354e51
-RUN microdnf install -y rsync openssh-clients kubernetes-client && \
+RUN microdnf install -y rsync openssh-clients kubernetes-client jq && \
     microdnf -y clean all && \
     rm -rf /var/cache /var/log/dnf* /var/log/yum.*
+COPY --from=dockerfile-json-builder /app/dockerfile-json /usr/bin

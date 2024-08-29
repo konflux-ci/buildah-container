@@ -4,3 +4,6 @@
 [submodule "image_build"]
 	path = image_build
 	url = https://github.com/containers/image_build.git
+[submodule "dockerfile-json"]
+	path = dockerfile-json
+	url = https://github.com/konflux-ci/dockerfile-json.git
