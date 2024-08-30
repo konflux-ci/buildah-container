@@ -1,0 +1,10 @@
+{
+    "extends": ["github>konflux-ci/mintmaker//config/renovate/renovate.json"],
+    "packageRules": [
+      {
+        "matchDatasources": ["docker"],
+        "enabled": false,
+        "matchPackageNames": ["/^registry.fedoraproject.org/"]
+      }
+    ]
+}
