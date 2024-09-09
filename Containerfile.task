@@ -5,14 +5,22 @@
 # for our tasks that has more than _just_ buildah in it. We also need to add the required functionality
 # for the remote builds.
 
-FROM registry.access.redhat.com/ubi9/go-toolset:1.21.11-9 AS dockerfile-json-builder
+FROM registry.fedoraproject.org/fedora-minimal:40 AS dockerfile-json-builder
+
+ARG BUILDER_RPMS="golang"
+RUN microdnf install -y $BUILDER_RPMS
+
+ENV GOPROXY='https://proxy.golang.org,direct'
+ENV GOSUMDB='sum.golang.org'
 
 WORKDIR /app
 COPY dockerfile-json .
 RUN go build -o dockerfile-json
 
 FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:a0b40e9ba2e343a809d4256530579329845a4ab4bd673cf94bdf28f51e942160
-RUN microdnf install -y rsync openssh-clients kubernetes-client jq && \
+
+ARG INSTALL_RPMS="rsync openssh-clients kubernetes-client jq"
+RUN microdnf install -y $INSTALL_RPMS && \
     microdnf -y clean all && \
     rm -rf /var/cache /var/log/dnf* /var/log/yum.*
 COPY --from=dockerfile-json-builder /app/dockerfile-json /usr/bin

@@ -1,20 +1,13 @@
-FROM registry.access.redhat.com/ubi9/ubi:latest@sha256:9460515b85f2a75278f2043438583c1c377c44bf100178bb653a6c8658304ac7 as builder
-RUN dnf -y install \
-    make \
-    golang \
-    glib2-devel \
-    gpgme-devel \
-    libassuan-devel \
-    libseccomp-devel \
-    git \
-    bzip2 \
-    runc \
-    containers-common
+FROM registry.fedoraproject.org/fedora-minimal:40 as builder
+
+ARG BUILDER_RPMS="make golang glib2-devel gpgme-devel libassuan-devel libseccomp-devel git bzip2 runc containers-common"
+RUN microdnf -y install $BUILDER_RPMS
+
+ENV GOPROXY='https://proxy.golang.org,direct'
+ENV GOSUMDB='sum.golang.org'
 
 WORKDIR /go/src/containers/buildah
-
 COPY buildah/ .
-
 RUN make buildah
 
 # buildah/Containerfile
@@ -32,12 +25,12 @@ RUN make buildah
 # that runs safely with privileges within the container.
 #
 
-FROM registry.fedoraproject.org/fedora-minimal:39
+FROM registry.fedoraproject.org/fedora-minimal:40
 
 LABEL "io.containers.capabilities"="CHOWN,DAC_OVERRIDE,FOWNER,FSETID,KILL,NET_BIND_SERVICE,SETFCAP,SETGID,SETPCAP,SETUID,CHOWN,DAC_OVERRIDE,FOWNER,FSETID,KILL,NET_BIND_SERVICE,SETFCAP,SETGID,SETPCAP,SETUID,SYS_CHROOT"
 LABEL name="buildah" \
       summary="Containerized version of buildah which can be used to build OCI artifacts" \
-      com.redhat.component="buildah" \
+      com.redhat.component="konflux-ci-buildah" \
       description="OCI images and artifacts are central to the architecture of Konflux. In order to ensure that we can always take advantage of the latest functionality, this image can be used to reliably build the latest version of the CLI." \
       io.k8s.display-name="buildah" \
       io.k8s.description="OCI images and artifacts are central to the architecture of Konflux. In order to ensure that we can always take advantage of the latest functionality, this image can be used to reliably build the latest version of the CLI." \
