@@ -19,7 +19,7 @@ RUN go build -o dockerfile-json
 
 FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:b3117a32216d11f17866d25dfe28da9ecf49c162df09378af2e35b404f63d35e
 
-ARG INSTALL_RPMS="rsync openssh-clients kubernetes-client jq"
+ARG INSTALL_RPMS="rsync openssh-clients kubernetes-client jq route"
 RUN microdnf install -y $INSTALL_RPMS && \
     microdnf -y clean all && \
     rm -rf /var/cache /var/log/dnf* /var/log/yum.*
