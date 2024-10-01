@@ -17,7 +17,7 @@ WORKDIR /app
 COPY dockerfile-json .
 RUN go build -o dockerfile-json
 
-FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:10d3a9eedfadf4908d1432a658bde1803e2d406cda4b73115699f5359321da36
+FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:aeaf4c45d9156bcae6e6e065d7e49072bde3a29ec5b937fbc080f3d8ea8a80bb
 
 ARG INSTALL_RPMS="rsync openssh-clients kubernetes-client jq iproute"
 RUN microdnf install -y $INSTALL_RPMS && \
