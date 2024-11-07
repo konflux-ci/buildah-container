@@ -10,6 +10,7 @@ metadata:
       (".tekton/build-pipeline.yaml".pathChanged() ||
       ".tekton/buildah-task-pull-request.yaml".pathChanged() ||
       ".tekton/buildah-task-push.yaml".pathChanged() ||
+      "dockerfile-json".pathChanged() ||
       "Containerfile.task".pathChanged())
   creationTimestamp: null
   labels:
