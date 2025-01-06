@@ -27,19 +27,21 @@ spec:
     value: '{{revision}}'
   - name: output-image
     value: quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah-task:{{revision}}
+  - name: build-platforms
+    value:
+    - linux/x86_64
+    - linux/arm64
+    - linux/ppc64le
+    - linux/s390x
   - name: dockerfile
     value: Containerfile.task
-  - name: enable-amd64-build
-    value: "true"
-  - name: enable-arm64-build
-    value: "true"
-  - name: enable-ppc64le-build
-    value: "true"
-  - name: enable-s390x-build
-    value: "true"
   pipelineRef:
     name: build-pipeline
+  timeouts:
+    pipeline: "2h0m0s"
+  taskRunTemplate: {}
   workspaces:
   - name: git-auth
     secret:
       secretName: '{{ git_auth_secret }}'
+status: {}
