@@ -1,5 +1,27 @@
 # Source from buildah/contrib/docker/Dockerfile
-FROM Fedora
+FROM quay.io/centos/centos:stream10-minimal
+
+# Ensure that labels are overwritten from parent image while also setting relevant new labels.
+# This includes overwriting the relevant org.label-schema labels used by centos stream as well as
+# creating new labels according to the image-spec: https://github.com/opencontainers/image-spec/blob/main/annotations.md
+LABEL \
+    org.label-schema.schema-version="1.0" \
+    org.label-schema.vendor="Konflux CI" \
+    org.opencontainers.image.vendor="Konflux CI" \
+    org.opencontainers.image.url="https://quay.io/konflux-ci/buildah" \
+    org.opencontainers.image.source="https://github.com/konflux-ci/buildah-container" \
+    org.label-schema.name="buildah" \
+    org.opencontainers.image.title="buildah" \
+    name="konflux-buildah" \
+    com.redhat.component="konflux-buildah" \
+    io.k8s.display-name="konflux-buildah" \
+    io.openshift.tags="buildah" \
+    summary="Command line tool to create and work with containers." \
+    description="Command line tool to create and work with containers. This is a repackaged version for use within Konflux CI." \
+    io.k8s.description="Command line tool to create and work with containers. This is a repackaged version for use within Konflux CI." \
+    org.opencontainers.image.documentation="https://github.com/containers/image_build/blob/main/buildah/README.md"
+
+
 RUN dnf -y update && dnf -y clean all
 RUN dnf -y install btrfs-progs-devel containers-common golang go-md2man gpgme-devel libassuan-devel libseccomp-devel make net-tools runc shadow-utils glibc-static libselinux-static libseccomp-static && dnf -y clean all
 COPY . /go/src/github.com/containers/buildah
