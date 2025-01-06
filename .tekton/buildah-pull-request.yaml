@@ -35,14 +35,12 @@ spec:
     value: .
   - name: revision
     value: '{{revision}}'
-  - name: enable-amd64-build
-    value: "true"
-  - name: enable-arm64-build
-    value: "true"
-  - name: enable-ppc64le-build
-    value: "true"
-  - name: enable-s390x-build
-    value: "true"
+  - name: build-platforms
+    value:
+    - linux/x86_64
+    - linux/arm64
+    - linux/ppc64le
+    - linux/s390x
   pipelineRef:
     name: build-pipeline
   timeouts:
