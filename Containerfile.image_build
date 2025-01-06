@@ -1,7 +1,7 @@
-FROM registry.fedoraproject.org/fedora-minimal:40 as builder
+FROM quay.io/centos/centos:stream10 as builder
 
-ARG BUILDER_RPMS="make golang glib2-devel gpgme-devel libassuan-devel libseccomp-devel git bzip2 runc containers-common"
-RUN microdnf -y install $BUILDER_RPMS
+ARG BUILDER_RPMS="make golang glib2-devel gpgme-devel libassuan-devel libseccomp-devel git bzip2 crun containers-common"
+RUN dnf config-manager --set-enabled crb && dnf -y install $BUILDER_RPMS
 
 ENV GOPROXY='https://proxy.golang.org,direct'
 ENV GOSUMDB='sum.golang.org'
@@ -25,22 +25,27 @@ RUN make buildah
 # that runs safely with privileges within the container.
 #
 
-FROM registry.fedoraproject.org/fedora-minimal:40
+FROM quay.io/centos/centos:stream10-minimal
 
 LABEL "io.containers.capabilities"="CHOWN,DAC_OVERRIDE,FOWNER,FSETID,KILL,NET_BIND_SERVICE,SETFCAP,SETGID,SETPCAP,SETUID,CHOWN,DAC_OVERRIDE,FOWNER,FSETID,KILL,NET_BIND_SERVICE,SETFCAP,SETGID,SETPCAP,SETUID,SYS_CHROOT"
-LABEL name="buildah" \
-      summary="Containerized version of buildah which can be used to build OCI artifacts" \
-      com.redhat.component="konflux-ci-buildah" \
+LABEL \
+      org.label-schema.schema-version="1.0" \
+      org.label-schema.vendor="Konflux CI" \
+      org.opencontainers.image.vendor="Konflux CI" \
+      org.opencontainers.image.url="https://quay.io/konflux-ci/buildah" \
+      org.opencontainers.image.source="https://github.com/konflux-ci/buildah-container" \
+      org.label-schema.name="buildah" \
+      org.opencontainers.image.title="buildah" \
+      name="konflux-buildah" \
+      com.redhat.component="konflux-buildah" \
+      io.k8s.display-name="konflux-buildah" \
+      io.openshift.tags="buildah oci" \
+      summary="Containerized version of buildah which can be used to build OCI artifacts within Konflux CI." \
       description="OCI images and artifacts are central to the architecture of Konflux. In order to ensure that we can always take advantage of the latest functionality, this image can be used to reliably build the latest version of the CLI." \
-      io.k8s.display-name="buildah" \
       io.k8s.description="OCI images and artifacts are central to the architecture of Konflux. In order to ensure that we can always take advantage of the latest functionality, this image can be used to reliably build the latest version of the CLI." \
-      io.openshift.tags="oci" \
-      vendor="Red Hat, Inc." \
-      distribution-scope="public" \
-      release="0" \
-      url="github.com/konflux-ci/buildah-container"
+      org.opencontainers.image.documentation="https://github.com/containers/image_build/blob/main/buildah/README.md"
 
-ARG INSTALL_RPMS="buildah fuse-overlayfs ucpp"
+ARG INSTALL_RPMS="buildah fuse-overlayfs cpp"
 
 # Don't include container-selinux and remove
 # directories used by dnf that are just taking
