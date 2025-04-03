@@ -14,8 +14,7 @@
 
 set -euo pipefail
 
-IMAGE="${1}"
-SQUASH="${SQUASH:-false}"
+CONTAINERFILE="${1}"
 
 icm_filename="content-sets.json"
 # Note this used to be /root/buildinfo/content_manifests but is now /usr/share/buildinfo for compatibility
@@ -27,15 +26,7 @@ if [ ! -f "./sbom-cachi2.json" ]; then
   exit 0
 fi
 
-echo "Extracting annotations to copy to the modified image"
-base_image_name=$(buildah inspect --format '{{ index .ImageAnnotations "org.opencontainers.image.base.name"}}' "$IMAGE" | cut -f1 -d'@')
-base_image_digest=$(buildah inspect --format '{{ index .ImageAnnotations "org.opencontainers.image.base.digest"}}' "$IMAGE")
-
-echo "Creating container from $IMAGE"
-CONTAINER=$(buildah from --pull-never $IMAGE)
-trap 'buildah rm "$CONTAINER"' EXIT
-
-echo "Preparing construction of $location for container $CONTAINER to be committed back as $IMAGE (squash: $SQUASH)"
+echo "Preparing construction of content-sets.json to be placed at $location in the image"
 cat >content-sets.json <<EOF
 {
     "metadata": {
@@ -69,14 +60,6 @@ done <<< "$(
 echo "Constructed the following:"
 cat content-sets.json
 
-echo "Writing that to $location"
-buildah copy "$CONTAINER" content-sets.json /usr/share/buildinfo/
-buildah config -a "org.opencontainers.image.base.name=${base_image_name}" -a "org.opencontainers.image.base.digest=${base_image_digest}" "$CONTAINER"
+echo "Appending a COPY command to the Containerfile"
 
-BUILDAH_ARGS=()
-if [ "${SQUASH}" == "true" ]; then
-  BUILDAH_ARGS+=("--squash")
-fi
-
-echo "Committing that back to $IMAGE"
-buildah commit "${BUILDAH_ARGS[@]}" "$CONTAINER" "$IMAGE"
+echo "COPY content-sets.json $location" >> "${CONTAINERFILE}"

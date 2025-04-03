@@ -20,16 +20,16 @@ cleanup() {
 trap cleanup EXIT
 
 WORKDIR=$(mktemp -d --suffix=-icm-inject-test)
-
-banner "Creating test image: $TEST_IMAGE"
-test_container=$(buildah from registry.fedoraproject.org/fedora-minimal:41)
-buildah commit "$test_container" "$TEST_IMAGE"
+cp "$SCRIPTDIR/test-data/Containerfile" "$WORKDIR/Containerfile"
 
 cd "$WORKDIR"
 
 banner "Running inject-icm.sh with a $TEST_SBOM_FORMAT SBOM"
 cp "$SCRIPTDIR/test-data/sbom-cachi2-$TEST_SBOM_FORMAT.json" ./sbom-cachi2.json
-bash "$SCRIPTDIR/inject-icm.sh" "$TEST_IMAGE"
+bash "$SCRIPTDIR/inject-icm.sh" Containerfile
+
+banner "Creating test image: $TEST_IMAGE"
+buildah build Containerfile "$TEST_IMAGE"
 
 expect_icm=$(jq -n '{
   "metadata": {
