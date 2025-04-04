@@ -17,6 +17,8 @@ WORKDIR /app
 COPY dockerfile-json .
 RUN go build -o dockerfile-json
 
+COPY scripts/icm-injection-scripts/inject-icm.sh /scripts
+
 FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:391ce6bd8652a81d1237d4aec46acabec0a6b61f9a7ea94a16ffa1a40d759378
 
 ARG INSTALL_RPMS="rsync openssh-clients kubernetes-client jq iproute subscription-manager"

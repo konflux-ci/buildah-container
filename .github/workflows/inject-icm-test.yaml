@@ -1,0 +1,25 @@
+name: Test icm-injection-scripts
+
+on:
+  pull_request:
+    branches:
+    - main
+    paths:
+    - .github/workflows/inject-icm-test.yaml
+    - /scripts/icm-injection-scripts/**
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Run test for cyclonedx
+      run: |
+        TEST_SBOM_FORMAT=cyclonedx ./scripts/icm-injection-scripts/test-inject-icm.sh
+
+    - name: Run test for spdx
+      run: |
+        TEST_SBOM_FORMAT=spdx ./scripts/icm-injection-scripts/test-inject-icm.sh
