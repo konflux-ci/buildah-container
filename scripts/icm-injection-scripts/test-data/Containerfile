@@ -1,3 +1,0 @@
-ARG FORMAT
-FROM registry.fedoraproject.org/fedora-minimal:41
-LABEL sbom-format=$FORMAT
