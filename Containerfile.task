@@ -19,7 +19,7 @@ RUN go build -o dockerfile-json
 
 COPY scripts/icm-injection-scripts/inject-icm.sh /scripts
 
-FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:391ce6bd8652a81d1237d4aec46acabec0a6b61f9a7ea94a16ffa1a40d759378
+FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:a3109c10a0083e7ae0dbd2e43a27874333476a79f5edddbcfa1adb739bb75c8a
 
 LABEL \
     org.opencontainers.image.url="https://quay.io/konflux-ci/buildah-task" \
