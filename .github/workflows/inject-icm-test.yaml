@@ -6,7 +6,7 @@ on:
     - main
     paths:
     - .github/workflows/inject-icm-test.yaml
-    - /scripts/icm-injection-scripts/**
+    - scripts/icm-injection-scripts/**
 
 jobs:
   check:

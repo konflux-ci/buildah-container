@@ -14,13 +14,12 @@ banner() {
 
 cleanup() {
     rm -r "$WORKDIR" || true
-    buildah rm "$test_container" >/dev/null || true
     buildah rmi "$TEST_IMAGE" >/dev/null || true
 }
 trap cleanup EXIT
 
 WORKDIR=$(mktemp -d --suffix=-icm-inject-test)
-cp "$SCRIPTDIR/test-data/Containerfile" "$WORKDIR/Containerfile"
+echo -e "FROM registry.fedoraproject.org/fedora-minimal:41\nRUN echo 'hello world!'" > "$WORKDIR/Containerfile"
 
 cd "$WORKDIR"
 
@@ -29,7 +28,7 @@ cp "$SCRIPTDIR/test-data/sbom-cachi2-$TEST_SBOM_FORMAT.json" ./sbom-cachi2.json
 bash "$SCRIPTDIR/inject-icm.sh" Containerfile
 
 banner "Creating test image: $TEST_IMAGE"
-buildah build Containerfile "$TEST_IMAGE"
+buildah build -f Containerfile -t "$TEST_IMAGE"
 
 expect_icm=$(jq -n '{
   "metadata": {
