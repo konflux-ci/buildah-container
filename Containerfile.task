@@ -5,7 +5,7 @@
 # for our tasks that has more than _just_ buildah in it. We also need to add the required functionality
 # for the remote builds.
 
-FROM registry.fedoraproject.org/fedora-minimal:40 AS dockerfile-json-builder
+FROM registry.fedoraproject.org/fedora-minimal:41 AS dockerfile-json-builder
 
 ARG BUILDER_RPMS="golang"
 RUN microdnf install -y $BUILDER_RPMS
@@ -20,6 +20,18 @@ RUN go build -o dockerfile-json
 COPY scripts/icm-injection-scripts/inject-icm.sh /scripts
 
 FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:391ce6bd8652a81d1237d4aec46acabec0a6b61f9a7ea94a16ffa1a40d759378
+
+LABEL \
+    org.opencontainers.image.url="https://quay.io/konflux-ci/buildah-task" \
+    org.label-schema.name="buildah-task" \
+    org.opencontainers.image.title="buildah-task" \
+    name="konflux-buildah-task" \
+    com.redhat.component="konflux-buildah-task" \
+    io.k8s.display-name="konflux-buildah-task" \
+    io.openshift.tags="buildah tekton" \
+    summary="Command line tool to create and work with containers within Tekton tasks." \
+    description="Command line tool to create and work with containers. This is a repackaged version for use within Tekton tasks in Konflux CI. It includes additional functionality on top of buildah that might be required for the tasks." \
+    io.k8s.description="Command line tool to create and work with containers. This is a repackaged version for use within Tekton tasks in Konflux CI. It includes additional functionality on top of buildah that might be required for the tasks."
 
 ARG INSTALL_RPMS="rsync openssh-clients kubernetes-client jq iproute subscription-manager"
 RUN microdnf install -y $INSTALL_RPMS && \

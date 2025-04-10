@@ -1,6 +1,7 @@
 [submodule "buildah"]
 	path = buildah
 	url = https://github.com/containers/buildah.git
+	branch = main
 [submodule "image_build"]
 	path = image_build
 	url = https://github.com/containers/image_build.git

@@ -1,4 +1,4 @@
-FROM registry.fedoraproject.org/fedora-minimal:40 as builder
+FROM registry.fedoraproject.org/fedora-minimal:41 as builder
 
 ARG BUILDER_RPMS="make golang glib2-devel gpgme-devel libassuan-devel libseccomp-devel git bzip2 runc containers-common"
 RUN microdnf -y install $BUILDER_RPMS
@@ -25,12 +25,22 @@ RUN make buildah
 # that runs safely with privileges within the container.
 #
 
-FROM registry.fedoraproject.org/fedora-minimal:40
+FROM registry.fedoraproject.org/fedora-minimal:41
 
 LABEL "io.containers.capabilities"="CHOWN,DAC_OVERRIDE,FOWNER,FSETID,KILL,NET_BIND_SERVICE,SETFCAP,SETGID,SETPCAP,SETUID,CHOWN,DAC_OVERRIDE,FOWNER,FSETID,KILL,NET_BIND_SERVICE,SETFCAP,SETGID,SETPCAP,SETUID,SYS_CHROOT"
-LABEL name="buildah" \
-      summary="Containerized version of buildah which can be used to build OCI artifacts" \
-      com.redhat.component="konflux-ci-buildah" \
+LABEL \
+      org.label-schema.schema-version="1.0" \
+      org.label-schema.vendor="Konflux CI" \
+      org.opencontainers.image.vendor="Konflux CI" \
+      org.opencontainers.image.url="https://quay.io/konflux-ci/buildah" \
+      org.opencontainers.image.source="https://github.com/konflux-ci/buildah-container" \
+      org.label-schema.name="buildah" \
+      org.opencontainers.image.title="buildah" \
+      name="konflux-buildah" \
+      com.redhat.component="konflux-buildah" \
+      io.k8s.display-name="konflux-buildah" \
+      io.openshift.tags="buildah oci" \
+      summary="Containerized version of buildah which can be used to build OCI artifacts within Konflux CI." \
       description="OCI images and artifacts are central to the architecture of Konflux. In order to ensure that we can always take advantage of the latest functionality, this image can be used to reliably build the latest version of the CLI." \
       io.k8s.display-name="buildah" \
       io.k8s.description="OCI images and artifacts are central to the architecture of Konflux. In order to ensure that we can always take advantage of the latest functionality, this image can be used to reliably build the latest version of the CLI." \
