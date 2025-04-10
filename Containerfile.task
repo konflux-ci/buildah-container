@@ -17,8 +17,6 @@ WORKDIR /app
 COPY dockerfile-json .
 RUN go build -o dockerfile-json
 
-COPY scripts/icm-injection-scripts/inject-icm.sh /scripts
-
 FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:a3109c10a0083e7ae0dbd2e43a27874333476a79f5edddbcfa1adb739bb75c8a
 
 LABEL \
@@ -38,3 +36,4 @@ RUN microdnf install -y $INSTALL_RPMS && \
     microdnf -y clean all && \
     rm -rf /var/cache /var/log/dnf* /var/log/yum.*
 COPY --from=dockerfile-json-builder /app/dockerfile-json /usr/bin
+COPY scripts/icm-injection-scripts/inject-icm.sh /usr/bin/inject-icm-to-containerfile
