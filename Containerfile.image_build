@@ -1,4 +1,4 @@
-FROM registry.fedoraproject.org/fedora-minimal:41 as builder
+FROM registry.fedoraproject.org/fedora-minimal:43 as builder
 
 ARG BUILDER_RPMS="make golang glib2-devel gpgme-devel libassuan-devel libseccomp-devel git bzip2 runc containers-common"
 RUN microdnf -y install $BUILDER_RPMS
@@ -25,7 +25,7 @@ RUN make buildah
 # that runs safely with privileges within the container.
 #
 
-FROM registry.fedoraproject.org/fedora-minimal:41
+FROM registry.fedoraproject.org/fedora-minimal:43
 
 LABEL "io.containers.capabilities"="CHOWN,DAC_OVERRIDE,FOWNER,FSETID,KILL,NET_BIND_SERVICE,SETFCAP,SETGID,SETPCAP,SETUID,CHOWN,DAC_OVERRIDE,FOWNER,FSETID,KILL,NET_BIND_SERVICE,SETFCAP,SETGID,SETPCAP,SETUID,SYS_CHROOT"
 LABEL \
