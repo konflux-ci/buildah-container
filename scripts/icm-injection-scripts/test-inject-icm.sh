@@ -25,7 +25,7 @@ cd "$WORKDIR"
 
 banner "Running inject-icm.sh with a $TEST_SBOM_FORMAT SBOM"
 cp "$SCRIPTDIR/test-data/sbom-cachi2-$TEST_SBOM_FORMAT.json" ./sbom-cachi2.json
-bash "$SCRIPTDIR/inject-icm.sh" Containerfile
+bash "$SCRIPTDIR/inject-icm.sh" Containerfile ./sbom-cachi2.json
 
 banner "Creating test image: $TEST_IMAGE"
 buildah build -f Containerfile -t "$TEST_IMAGE"

@@ -15,19 +15,25 @@
 set -euo pipefail
 
 CONTAINERFILE="${1}"
+PREFETCH_SBOM="${2}"
+OUTPUT_DIRECTORY="${3:-.}"
 
 icm_filename="content-sets.json"
+icm_output_location="${OUTPUT_DIRECTORY}/${icm_filename}"
 # Note this used to be /root/buildinfo/content_manifests but is now /usr/share/buildinfo for compatibility
 # with bootc/ostree systems. Ref https://issues.redhat.com/browse/KONFLUX-6844
-location="/usr/share/buildinfo/${icm_filename}"
+location_in_container="/usr/share/buildinfo/${icm_filename}"
 
-if [ ! -f "./sbom-cachi2.json" ]; then
-  echo "Could not find sbom-cachi2.json. No content_sets found for ICM"
+
+echo "Checking if ${PREFETCH_SBOM} exists."
+
+if [ ! -f "${PREFETCH_SBOM}" ]; then
+  echo "Could not find prefetched sbom. No content_sets found for ICM"
   exit 0
 fi
 
-echo "Preparing construction of content-sets.json to be placed at $location in the image"
-cat >content-sets.json <<EOF
+echo "Preparing construction of content-sets.json to be placed at $location_in_container in the image"
+cat >${icm_output_location} <<EOF
 {
     "metadata": {
 	"icm_version": 1,
@@ -43,8 +49,8 @@ EOF
 while IFS='' read -r content_set;
 do
   if [ "${content_set}" != "" ]; then
-    jq --arg content_set "$content_set" '.content_sets += [$content_set]' content-sets.json > content-sets.json.tmp
-    mv content-sets.json.tmp content-sets.json
+    jq --arg content_set "$content_set" '.content_sets += [$content_set]' ${icm_output_location} > content-sets.json.tmp
+    mv content-sets.json.tmp ${icm_output_location}
   fi
 done <<< "$(
     jq -r '
@@ -52,14 +58,14 @@ done <<< "$(
             .components[].purl
         else
             .packages[].externalRefs[]? | select(.referenceType == "purl") | .referenceLocator
-        end' sbom-cachi2.json |
+        end' ${PREFETCH_SBOM} |
     grep -o -P '(?<=repository_id=).*(?=(&|$))' |
     sort -u
 )"
 
 echo "Constructed the following:"
-cat content-sets.json
+cat ${icm_output_location}
 
 echo "Appending a COPY command to the Containerfile"
 
-echo "COPY content-sets.json $location" >> "${CONTAINERFILE}"
+echo "COPY $icm_filename $location_in_container" >> "${CONTAINERFILE}"
