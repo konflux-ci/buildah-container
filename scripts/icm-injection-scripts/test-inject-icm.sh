@@ -19,7 +19,7 @@ cleanup() {
 trap cleanup EXIT
 
 WORKDIR=$(mktemp -d --suffix=-icm-inject-test)
-echo -e "FROM registry.fedoraproject.org/fedora-minimal:41\nRUN echo 'hello world!'" > "$WORKDIR/Containerfile"
+echo -ne "FROM registry.fedoraproject.org/fedora-minimal:41\nRUN echo 'hello world!'" > "$WORKDIR/Containerfile"
 
 cd "$WORKDIR"
 

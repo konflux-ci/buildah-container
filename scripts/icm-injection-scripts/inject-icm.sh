@@ -68,4 +68,7 @@ cat ${icm_output_location}
 
 echo "Appending a COPY command to the Containerfile"
 
+# add new line before and after so it won't be adding at the same line if new line is missing in containerfile
+echo >> "${CONTAINERFILE}"
 echo "COPY $icm_filename $location_in_container" >> "${CONTAINERFILE}"
+echo >> "${CONTAINERFILE}"
