@@ -17,7 +17,7 @@ WORKDIR /app
 COPY dockerfile-json .
 RUN go build -o dockerfile-json
 
-FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:350e8fdf5a875695dd663b42657a2d07e295b4abc8ca624d87467f13073a3166
+FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:ecded8c8a25805b0d5386687dd48a6fa60ea033bbc42373a11e566aa7ca147b7
 
 LABEL \
     org.opencontainers.image.url="https://quay.io/konflux-ci/buildah-task" \
