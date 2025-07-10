@@ -7,13 +7,10 @@ metadata:
     build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
-    pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch == "main" &&
-      (".tekton/build-pipeline.yaml".pathChanged() ||
-      ".tekton/buildah-task-pull-request.yaml".pathChanged() ||
-      ".tekton/buildah-task-push.yaml".pathChanged() ||
-      "dockerfile-json".pathChanged() ||
-      "Containerfile.task".pathChanged() ||
-      "scripts/**".pathChanged())
+    pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch
+      == "main" && (".tekton/build-pipeline.yaml".pathChanged() || ".tekton/buildah-task-pull-request.yaml".pathChanged()
+      || ".tekton/buildah-task-push.yaml".pathChanged() || "dockerfile-json".pathChanged()
+      || "Containerfile.task".pathChanged() || "scripts/**".pathChanged())
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: buildah-container
@@ -42,9 +39,10 @@ spec:
     value: Containerfile.task
   pipelineRef:
     name: build-pipeline
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-buildah-task
   timeouts:
-    pipeline: "2h0m0s"
-  taskRunTemplate: {}
+    pipeline: 2h0m0s
   workspaces:
   - name: git-auth
     secret:
