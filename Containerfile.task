@@ -38,4 +38,6 @@ RUN microdnf install -y $INSTALL_RPMS && \
 COPY --from=dockerfile-json-builder /app/dockerfile-json /usr/bin
 COPY scripts/icm-injection-scripts/inject-icm.sh /usr/bin/inject-icm-to-containerfile
 COPY scripts/utils/retry-func.sh /usr/bin/retry
+COPY scripts/utils/attach-migration-file.sh /usr/bin/attach-migration-file
 RUN chmod +x /usr/bin/retry
+RUN chmod +x /usr/bin/attach-migration-file
