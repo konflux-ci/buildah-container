@@ -14,15 +14,32 @@
 
 set -euo pipefail
 
+INCLUDE_COMPAT_PATH="false"
+
+while getopts ":c" opt; do
+    case "${opt}" in
+        c)
+            INCLUDE_COMPAT_PATH="true"
+            ;;
+        *)
+            echo "Warning: invalid option ${opt}"
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
 CONTAINERFILE="${1}"
 PREFETCH_SBOM="${2}"
 OUTPUT_DIRECTORY="${3:-.}"
 
 icm_filename="content-sets.json"
 icm_output_location="${OUTPUT_DIRECTORY}/${icm_filename}"
-# Note this used to be /root/buildinfo/content_manifests but is now /usr/share/buildinfo for compatibility
+# New location /usr/share/buildinfo for compatibility
 # with bootc/ostree systems. Ref https://issues.redhat.com/browse/KONFLUX-6844
 location_in_container="/usr/share/buildinfo/${icm_filename}"
+
+# keep compatibility with old location, until majority of scanners migrate to the new location
+location_in_container_compat="/root/buildinfo/content_manifests/${icm_filename}"
 
 
 echo "Checking if ${PREFETCH_SBOM} exists."
@@ -72,3 +89,8 @@ echo "Appending a COPY command to the Containerfile"
 echo >> "${CONTAINERFILE}"
 echo "COPY $icm_filename $location_in_container" >> "${CONTAINERFILE}"
 echo >> "${CONTAINERFILE}"
+
+if [ "${INCLUDE_COMPAT_PATH}" = "true" ]; then
+  echo "COPY $icm_filename $location_in_container_compat" >> "${CONTAINERFILE}"
+  echo >> "${CONTAINERFILE}"
+fi
