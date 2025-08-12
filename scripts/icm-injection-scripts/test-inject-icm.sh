@@ -25,7 +25,7 @@ cd "$WORKDIR"
 
 banner "Running inject-icm.sh with a $TEST_SBOM_FORMAT SBOM"
 cp "$SCRIPTDIR/test-data/sbom-cachi2-$TEST_SBOM_FORMAT.json" ./sbom-cachi2.json
-bash "$SCRIPTDIR/inject-icm.sh" Containerfile ./sbom-cachi2.json
+bash "$SCRIPTDIR/inject-icm.sh" -c Containerfile ./sbom-cachi2.json
 
 banner "Creating test image: $TEST_IMAGE"
 buildah build -f Containerfile -t "$TEST_IMAGE"
@@ -57,6 +57,24 @@ if [[ "$expect_icm" != "$got_icm" ]]; then
         "------------------------" \
         "Got:" \
         "$got_icm"
+    exit 1
+else
+    echo "✅ Success!"
+fi
+
+banner "Checking the content of /root/buildinfo/content_manifests/content-sets.json in $TEST_IMAGE (backward compatibility)"
+
+got_icm_compat=$(podman run --rm "$TEST_IMAGE" cat /root/buildinfo/content_manifests/content-sets.json | jq)
+
+if [[ "$expect_icm" != "$got_icm_compat" ]]; then
+    printf "%s\n" \
+        "❌ Mismatched ICM files!" \
+        "------------------------" \
+        "Expected:" \
+        "$expect_icm" \
+        "------------------------" \
+        "Got:" \
+        "$got_icm_compat"
     exit 1
 else
     echo "✅ Success!"
