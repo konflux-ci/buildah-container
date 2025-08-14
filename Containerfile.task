@@ -5,7 +5,7 @@
 # for our tasks that has more than _just_ buildah in it. We also need to add the required functionality
 # for the remote builds.
 
-FROM registry.fedoraproject.org/fedora-minimal:41 AS dockerfile-json-builder
+FROM registry.access.redhat.com/ubi10/ubi-minimal@sha256:5a57b4c2509df8df587e19cc7c2d9cfa45b012139f5decd77f942daeb2334228 AS dockerfile-json-builder
 
 ARG BUILDER_RPMS="golang"
 RUN microdnf install -y $BUILDER_RPMS
@@ -17,7 +17,7 @@ WORKDIR /app
 COPY dockerfile-json .
 RUN go build -o dockerfile-json
 
-FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:e82ac58c007b269bb8dd15cb9ba1084ae385462c2a3475afeefeaa91b254517a
+FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah:on-pr-24255e6fff37c790bf01e72d9a06e1312bd5f71d
 
 LABEL \
     org.opencontainers.image.url="https://quay.io/konflux-ci/buildah-task" \
@@ -31,7 +31,7 @@ LABEL \
     description="Command line tool to create and work with containers. This is a repackaged version for use within Tekton tasks in Konflux CI. It includes additional functionality on top of buildah that might be required for the tasks." \
     io.k8s.description="Command line tool to create and work with containers. This is a repackaged version for use within Tekton tasks in Konflux CI. It includes additional functionality on top of buildah that might be required for the tasks."
 
-ARG INSTALL_RPMS="rsync openssh-clients kubernetes-client jq iproute subscription-manager"
+ARG INSTALL_RPMS="rsync openssh-clients jq iproute subscription-manager"
 RUN microdnf install -y $INSTALL_RPMS && \
     microdnf -y clean all && \
     rm -rf /var/cache /var/log/dnf* /var/log/yum.*
