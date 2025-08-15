@@ -1,6 +1,6 @@
-FROM registry.fedoraproject.org/fedora-minimal:41 as builder
+FROM registry.access.redhat.com/ubi10/ubi-minimal@sha256:5a57b4c2509df8df587e19cc7c2d9cfa45b012139f5decd77f942daeb2334228 as builder
 
-ARG BUILDER_RPMS="make golang glib2-devel gpgme-devel libassuan-devel libseccomp-devel git bzip2 runc containers-common"
+ARG BUILDER_RPMS="make golang glib2-devel gpgme-devel libassuan-devel libseccomp-devel git bzip2 containers-common"
 RUN microdnf -y install $BUILDER_RPMS
 
 ENV GOPROXY='https://proxy.golang.org,direct'
@@ -25,7 +25,7 @@ RUN make buildah
 # that runs safely with privileges within the container.
 #
 
-FROM registry.fedoraproject.org/fedora-minimal:41
+FROM registry.access.redhat.com/ubi10/ubi-minimal@sha256:5a57b4c2509df8df587e19cc7c2d9cfa45b012139f5decd77f942daeb2334228
 
 LABEL "io.containers.capabilities"="CHOWN,DAC_OVERRIDE,FOWNER,FSETID,KILL,NET_BIND_SERVICE,SETFCAP,SETGID,SETPCAP,SETUID,CHOWN,DAC_OVERRIDE,FOWNER,FSETID,KILL,NET_BIND_SERVICE,SETFCAP,SETGID,SETPCAP,SETUID,SYS_CHROOT"
 LABEL \
@@ -50,20 +50,16 @@ LABEL \
       release="0" \
       url="github.com/konflux-ci/buildah-container"
 
-ARG INSTALL_RPMS="buildah fuse-overlayfs ucpp"
+ARG INSTALL_RPMS="buildah fuse-overlayfs cpp"
 
 # Don't include container-selinux and remove
 # directories used by dnf that are just taking
 # up space.
-# TODO: rpm --setcaps... needed due to Fedora (base) image builds
-#       being (maybe still?) affected by
-#       https://bugzilla.redhat.com/show_bug.cgi?id=1995337#c3
-RUN microdnf -y makecache && \
+RUN printf "[main]\nexcludepkgs=container-selinux" > /etc/dnf/dnf.conf && \
+    microdnf -y makecache && \
     microdnf -y update && \
     microdnf -y install shadow-utils && \
-    rpm --setcaps shadow-utils 2>/dev/null && \
-    microdnf -y install $INSTALL_RPMS --exclude container-selinux && \
-    ln -s /usr/bin/ucpp /usr/local/bin/cpp && \
+    microdnf -y install $INSTALL_RPMS && \
     microdnf -y clean all && \
     rm -rf /var/cache /var/log/dnf* /var/log/yum.*
 
