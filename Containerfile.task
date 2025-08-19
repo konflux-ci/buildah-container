@@ -5,7 +5,7 @@
 # for our tasks that has more than _just_ buildah in it. We also need to add the required functionality
 # for the remote builds.
 
-FROM registry.fedoraproject.org/fedora-minimal:41 AS dockerfile-json-builder
+FROM registry.fedoraproject.org/fedora-minimal:44 AS dockerfile-json-builder
 
 ARG BUILDER_RPMS="golang"
 RUN microdnf install -y $BUILDER_RPMS
