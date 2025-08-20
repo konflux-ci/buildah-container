@@ -5,7 +5,7 @@
 # for our tasks that has more than _just_ buildah in it. We also need to add the required functionality
 # for the remote builds.
 
-FROM registry.fedoraproject.org/fedora-minimal:41 AS dep-builder
+FROM registry.access.redhat.com/ubi10/ubi-minimal@sha256:5a57b4c2509df8df587e19cc7c2d9cfa45b012139f5decd77f942daeb2334228 AS dep-builder
 
 ARG BUILDER_RPMS="golang make rsync"
 RUN microdnf install -y $BUILDER_RPMS
@@ -23,7 +23,7 @@ RUN go build -o dockerfile-json
 WORKDIR /app/kubectl
 RUN make kubectl
 
-FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:e82ac58c007b269bb8dd15cb9ba1084ae385462c2a3475afeefeaa91b254517a
+FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:511d30c2e7d539ff019e891214d4b40aebec856d98cfd624176590abf27c3246
 
 LABEL \
     org.opencontainers.image.url="https://quay.io/konflux-ci/buildah-task" \
