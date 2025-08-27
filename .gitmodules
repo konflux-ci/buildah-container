@@ -10,3 +10,7 @@
 [submodule "dockerfile-json"]
 	path = dockerfile-json
 	url = https://github.com/konflux-ci/dockerfile-json.git
+[submodule "kubectl"]
+	path = kubectl
+	url = https://github.com/kubernetes/kubernetes.git
+	branch = v1.33.4
