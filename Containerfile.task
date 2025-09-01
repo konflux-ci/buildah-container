@@ -23,7 +23,7 @@ RUN go build -o dockerfile-json
 WORKDIR /app/kubectl
 RUN make kubectl
 
-FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:511d30c2e7d539ff019e891214d4b40aebec856d98cfd624176590abf27c3246
+FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:8c07ab0a4c7bcf74a3ea9b73f06f7cc1e2fce90e6377613ec1811c6e25708ce5
 
 LABEL \
     org.opencontainers.image.url="https://quay.io/konflux-ci/buildah-task" \
