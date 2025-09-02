@@ -13,4 +13,4 @@
 [submodule "kubectl"]
 	path = kubectl
 	url = https://github.com/kubernetes/kubernetes.git
-	branch = v1.33.4
+	branch = v1.34.0
