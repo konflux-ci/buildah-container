@@ -1,5 +1,5 @@
 # Source from buildah/contrib/docker/Dockerfile
-FROM registry.access.redhat.com/ubi10/ubi@sha256:b51579c045599bc2f2ba407f28fcc26e13b87409e062e227b185ae69d699bf95
+FROM registry.access.redhat.com/ubi10/ubi@sha256:fe8738a6e2fb7595227c058b18250ff60a8a3ea0078296d8b46e0a419738a69c
 RUN dnf -y update && dnf -y clean all
 RUN dnf -y install containers-common golang gpgme-devel libassuan-devel libseccomp-devel make net-tools shadow-utils glibc-static && dnf -y clean all
 COPY buildah/ /go/src/github.com/containers/buildah
