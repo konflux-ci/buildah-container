@@ -116,6 +116,8 @@ RUN sed -e 's|^mount_program|#mount_program|g' \
         > /home/build/.config/containers/storage.conf && \
         chown build:build /home/build/.config/containers/storage.conf
 
+RUN echo '{"default":[{"type": "insecureAcceptAnything"}],"transports":{"docker-daemon":{"":[{"type":"insecureAcceptAnything"}]}}}' > /etc/containers/policy.json
+
 VOLUME /var/lib/containers
 VOLUME /home/build/.local/share/containers
 
