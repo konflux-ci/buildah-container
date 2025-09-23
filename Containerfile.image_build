@@ -11,7 +11,7 @@ COPY buildah/ .
 RUN make buildah
 
 # buildah/Containerfile
-# 
+#
 # Source from the included submodule at
 # image_build/blob/main/buildah/Containerfile.
 # We will install buildah as an RPM to ensure that we have
@@ -25,7 +25,7 @@ RUN make buildah
 # that runs safely with privileges within the container.
 #
 
-FROM registry.access.redhat.com/ubi10/ubi-minimal@sha256:d8cba62fbd44610595a6ce7badd287ca4c9985cbe9df55cc9b6a5c311b9a46e6
+FROM registry.access.redhat.com/ubi10/ubi-minimal@sha256:53de6ac7c3e830b0ddfc9867ff6a8092785bcf156ab4e63dfa9af83c880fd988
 
 LABEL "io.containers.capabilities"="CHOWN,DAC_OVERRIDE,FOWNER,FSETID,KILL,NET_BIND_SERVICE,SETFCAP,SETGID,SETPCAP,SETUID,CHOWN,DAC_OVERRIDE,FOWNER,FSETID,KILL,NET_BIND_SERVICE,SETFCAP,SETGID,SETPCAP,SETUID,SYS_CHROOT"
 LABEL \
