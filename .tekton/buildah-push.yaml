@@ -10,6 +10,8 @@ metadata:
       event == "push" &&
       target_branch == "main" &&
       (
+        ".tekton/build-pipeline.yaml".pathChanged() ||
+        ".tekton/buildah-push.yaml".pathChanged() ||
         "buildah".pathChanged() ||
         "image_build".pathChanged() ||
         "Containerfile.image_build".pathChanged()

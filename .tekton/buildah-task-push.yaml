@@ -10,6 +10,8 @@ metadata:
       event == "push" &&
       target_branch == "main" &&
       (
+        ".tekton/build-pipeline.yaml".pathChanged() ||
+        ".tekton/buildah-task-push.yaml".pathChanged() ||
         "dockerfile-json".pathChanged() ||
         "Containerfile.task".pathChanged() ||
         "kubectl".pathChanged() ||
