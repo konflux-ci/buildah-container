@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi10/ubi-minimal@sha256:d8cba62fbd44610595a6ce7badd287ca4c9985cbe9df55cc9b6a5c311b9a46e6 as builder
+FROM registry.access.redhat.com/ubi10/ubi-minimal@sha256:ebc9604c67aa5daa87cd431d64754a1cb6e22372446a6e8e0d966bfc709c9f3f as builder
 
 ARG BUILDER_RPMS="make golang glib2-devel gpgme-devel libassuan-devel libseccomp-devel git bzip2 containers-common"
 RUN microdnf -y install $BUILDER_RPMS
@@ -25,7 +25,7 @@ RUN make buildah
 # that runs safely with privileges within the container.
 #
 
-FROM registry.access.redhat.com/ubi10/ubi-minimal@sha256:53de6ac7c3e830b0ddfc9867ff6a8092785bcf156ab4e63dfa9af83c880fd988
+FROM registry.access.redhat.com/ubi10/ubi-minimal@sha256:ebc9604c67aa5daa87cd431d64754a1cb6e22372446a6e8e0d966bfc709c9f3f
 
 LABEL "io.containers.capabilities"="CHOWN,DAC_OVERRIDE,FOWNER,FSETID,KILL,NET_BIND_SERVICE,SETFCAP,SETGID,SETPCAP,SETUID,CHOWN,DAC_OVERRIDE,FOWNER,FSETID,KILL,NET_BIND_SERVICE,SETFCAP,SETGID,SETPCAP,SETUID,SYS_CHROOT"
 LABEL \
