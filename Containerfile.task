@@ -23,7 +23,7 @@ RUN go build -tags=dfrunsecurity -o dockerfile-json
 WORKDIR /app/kubectl
 RUN make kubectl
 
-FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:e5765bd6ebc51cdaf90a204ac1f995741b7f56a46d1dc92bcd3bf72fc967e5e6
+FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:d8a5ecc3e51e9b1cea45dd154ad5b91f3e4ec5eeed29300b482c59e422c91ca0
 
 LABEL \
     org.opencontainers.image.url="https://quay.io/konflux-ci/buildah-task" \
@@ -37,7 +37,7 @@ LABEL \
     description="Command line tool to create and work with containers. This is a repackaged version for use within Tekton tasks in Konflux CI. It includes additional functionality on top of buildah that might be required for the tasks." \
     io.k8s.description="Command line tool to create and work with containers. This is a repackaged version for use within Tekton tasks in Konflux CI. It includes additional functionality on top of buildah that might be required for the tasks."
 
-ARG INSTALL_RPMS="rsync openssh-clients jq iproute subscription-manager"
+ARG INSTALL_RPMS="rsync openssh-clients jq iproute subscription-manager openssl-libs"
 RUN microdnf install -y $INSTALL_RPMS && \
     microdnf -y clean all && \
     rm -rf /var/cache /var/log/dnf* /var/log/yum.*
