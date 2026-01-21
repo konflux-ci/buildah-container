@@ -1,12 +1,3 @@
-[submodule "buildah"]
-	path = buildah
-	url = https://github.com/containers/buildah.git
-	# https://docs.renovatebot.com/modules/manager/git-submodules/#updating-to-specific-tag-values
-	# Note: breaks 'git submodule update --remote'. See the doc ^
-	branch = v1.41.5
-[submodule "image_build"]
-	path = image_build
-	url = https://github.com/containers/image_build.git
 [submodule "dockerfile-json"]
 	path = dockerfile-json
 	url = https://github.com/konflux-ci/dockerfile-json.git
