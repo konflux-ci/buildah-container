@@ -15,15 +15,11 @@ ENV GOSUMDB='sum.golang.org'
 
 WORKDIR /app
 COPY dockerfile-json dockerfile-json
-COPY kubectl kubectl
 
 WORKDIR /app/dockerfile-json
 RUN go build -tags=dfrunsecurity -o dockerfile-json
 
-WORKDIR /app/kubectl
-RUN make kubectl
-
-FROM quay.io/redhat-user-workloads/rhtap-build-tenant/buildah-container/buildah@sha256:d8a5ecc3e51e9b1cea45dd154ad5b91f3e4ec5eeed29300b482c59e422c91ca0
+FROM quay.io/konflux-ci/task-runner:1.2.0@sha256:fbfcb48f2d05e7436830382c7ba079493d3426f5ebdffa4b87fee4229551d4c0
 
 LABEL \
     org.opencontainers.image.url="https://quay.io/konflux-ci/buildah-task" \
@@ -37,12 +33,23 @@ LABEL \
     description="Command line tool to create and work with containers. This is a repackaged version for use within Tekton tasks in Konflux CI. It includes additional functionality on top of buildah that might be required for the tasks." \
     io.k8s.description="Command line tool to create and work with containers. This is a repackaged version for use within Tekton tasks in Konflux CI. It includes additional functionality on top of buildah that might be required for the tasks."
 
-ARG INSTALL_RPMS="rsync openssh-clients jq iproute subscription-manager openssl-libs"
+USER 0
+
+ARG INSTALL_RPMS="rsync openssh-clients iproute subscription-manager openssl-libs"
 RUN microdnf install -y $INSTALL_RPMS && \
     microdnf -y clean all && \
     rm -rf /var/cache /var/log/dnf* /var/log/yum.*
 COPY --from=dep-builder /app/dockerfile-json/dockerfile-json /usr/bin
-COPY --from=dep-builder /app/kubectl/_output/bin/kubectl /usr/bin
 COPY scripts/icm-injection-scripts/inject-icm.sh /usr/bin/inject-icm-to-containerfile
+
+# Note: the retry script isn't necessary anymore, because the task-runner image has
+# /usr/local/bin/retry with near-compatible behavior. To be fully compatible, it just
+# needs the RETRY_STOP_IF_STDERR_MATCHES=unauthorized environment variable, which is set
+# in the task-runner base image.
+#
+# However, other quay.io/konflux-ci images use the 'COPY --from' trick to copy the retry
+# script from the buildah image, so we have to keep it here for now.
 COPY scripts/utils/retry-func.sh /usr/bin/retry
 RUN chmod +x /usr/bin/retry
+
+RUN echo '{"default":[{"type": "insecureAcceptAnything"}],"transports":{"docker-daemon":{"":[{"type":"insecureAcceptAnything"}]}}}' > /etc/containers/policy.json

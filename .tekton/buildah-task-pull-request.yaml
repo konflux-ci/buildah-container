@@ -15,7 +15,6 @@ metadata:
         ".tekton/buildah-task-pull-request.yaml".pathChanged() ||
         "dockerfile-json".pathChanged() ||
         "Containerfile.task".pathChanged() ||
-        "kubectl".pathChanged() ||
         "scripts/**".pathChanged()
       )
   creationTimestamp: null
