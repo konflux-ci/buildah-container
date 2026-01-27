@@ -5,7 +5,7 @@
 # for our tasks that has more than _just_ buildah in it. We also need to add the required functionality
 # for the remote builds.
 
-FROM registry.access.redhat.com/ubi10/ubi-minimal@sha256:53de6ac7c3e830b0ddfc9867ff6a8092785bcf156ab4e63dfa9af83c880fd988 AS dep-builder
+FROM registry.access.redhat.com/ubi10/ubi-minimal@sha256:919a5a4c8595deb2f9c21b8a05ad027157f42feb6eed6b64efd1f4f455a5f759 AS dep-builder
 
 ARG BUILDER_RPMS="golang make rsync"
 RUN microdnf install -y $BUILDER_RPMS
