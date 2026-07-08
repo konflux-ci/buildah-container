@@ -1,3 +1,9 @@
+# Deprecation notice
+
+This repository is deprecated and is not maintained any more.
+The current buildah task uses the [task-runner](https://github.com/konflux-ci/task-runner) image as the base image.
+If you use the [buildah-task](https://quay.io/repository/konflux-ci/buildah-task) image, please switch to the [task-runner](https://quay.io/repository/konflux-ci/task-runner) image.
+
 # konflux-ci/buildah-task
 
 This is an image that contains the tools and Bash scripts needed for the Konflux buildah task.
